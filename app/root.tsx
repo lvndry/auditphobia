@@ -4,7 +4,7 @@ import {
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration
+  ScrollRestoration,
 } from "remix";
 import type { MetaFunction } from "remix";
 
@@ -23,6 +23,7 @@ export default function App() {
       </head>
       <body>
         <Outlet />
+        <Scripts />
         <ScrollRestoration />
         <LiveReload />
       </body>

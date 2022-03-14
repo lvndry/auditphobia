@@ -2,7 +2,7 @@
   "name": "auditphobia",
   "private": false,
   "description": "Check security vulnerabilites of your npm packages",
-  "license": "",
+  "license": "MIT",
   "sideEffects": false,
   "scripts": {
     "build": "cross-env NODE_ENV=production remix build",
