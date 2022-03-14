@@ -1,4 +1,8 @@
+import styles from "./styles.css";
+
 type InputProps = React.HTMLProps<HTMLInputElement>;
+
+export const links = () => [{ rel: "stylesheet", href: styles }];
 
 export const Input = (
 	{ type, name, placeholder, className, onChange, ...props }: InputProps = {
@@ -7,8 +11,9 @@ export const Input = (
 ) => {
 	return (
 		<input
+			data-input
 			type={type}
-			className={className}
+			className={`audph-input ${className}`}
 			onChange={onChange}
 			name={name}
 			placeholder={placeholder}
