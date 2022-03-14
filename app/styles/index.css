@@ -1,0 +1,50 @@
+.homepage,
+.homepage-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	width: 100%;
+	margin-top: 5em;
+}
+
+[data-input-wrapper] {
+	text-align: center;
+	border: 1px solid gray;
+	border-radius: 8px;
+}
+
+[data-input] {
+	padding: 15px 35px;
+	font-size: 2em;
+	text-align: center;
+	color: #b3adad;
+}
+
+[data-input]:focus {
+	outline: none;
+}
+
+[data-query-form] {
+	width: 50%;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+[data-suggestions-list] {
+	list-style: none;
+	padding: 0;
+}
+
+[data-suggestions-list-item] {
+	position: relative;
+	height: 1rem;
+	padding: 1rem;
+	font-size: 1.1rem;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	opacity: 1;
+}
