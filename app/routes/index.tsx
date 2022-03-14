@@ -1,6 +1,7 @@
 import { Form, json, LoaderFunction, useLoaderData, useSubmit } from "remix";
-import { Input } from "~/components/input";
+import { Input, links as InputLinks } from "~/components/input";
 import { NPMSPackage } from "~/types/package";
+import styles from "~/styles/index.css";
 
 export const loader: LoaderFunction = async ({ request }) => {
 	const url = new URL(request.url);
@@ -16,31 +17,45 @@ export const loader: LoaderFunction = async ({ request }) => {
 	return json({});
 };
 
+export const links = () => [
+	...InputLinks(),
+	{ rel: "stylesheet", href: styles },
+];
+
 export default function Index() {
 	const submit = useSubmit();
-	const packages: NPMSPackage[] = useLoaderData();
+	const suggestions: NPMSPackage[] = useLoaderData();
 
 	const handleChange = (event: React.FormEvent<HTMLFormElement>) => {
 		submit(event.currentTarget);
 	};
 
 	return (
-		<div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-			<h1>Auditphobia</h1>
-			<Form autoComplete="off" onChange={handleChange}>
-				<Input
-					name="query"
-					placeholder="find pacakge"
-					aria-label="package-name"
-				/>
-			</Form>
-			<div>
-				{packages.length
-					? packages.map((p) => {
-							return <div>{p.package.name}</div>;
-					  })
-					: null}
+		<main className="homepage">
+			<div className="homepage-container">
+				<h1>Auditphobia</h1>
+				<h2>Find the vulnerabilites of NPM Packages</h2>
+				<Form autoComplete="off" onChange={handleChange} data-query-form>
+					<div data-input-wrapper>
+						<Input
+							name="query"
+							placeholder="find pacakge"
+							aria-label="package-name"
+						/>
+					</div>
+					<ul data-suggestions-list>
+						{suggestions.length
+							? suggestions.map((suggestion) => {
+									return (
+										<li data-suggestions-list-item>
+											{suggestion.package.name}
+										</li>
+									);
+							  })
+							: null}
+					</ul>
+				</Form>
 			</div>
-		</div>
+		</main>
 	);
 }
