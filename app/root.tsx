@@ -10,7 +10,7 @@ import type { MetaFunction } from "remix";
 import styles from "~/styles/root.css";
 
 export const meta: MetaFunction = () => {
-	return { title: "AuditPhobia" };
+	return { title: "Auditphobia" };
 };
 
 export const links = () => [{ rel: "stylesheet", href: styles }];

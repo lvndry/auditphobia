@@ -43,17 +43,25 @@ export default function Index() {
 							aria-label="package-name"
 						/>
 					</div>
-					<ul data-suggestions-list>
+					<div data-suggestions-list>
 						{suggestions.length
 							? suggestions.map((suggestion) => {
 									return (
-										<li data-suggestions-list-item>
-											{suggestion.package.name}
-										</li>
+										<div
+											key={suggestion.package.name}
+											data-suggestions-list-item
+										>
+											<a
+												href={`/package/${suggestion.package.name}/${suggestion.package.version}`}
+												data-suggestions-list-item
+											>
+												{suggestion.package.name}
+											</a>
+										</div>
 									);
 							  })
 							: null}
-					</ul>
+					</div>
 				</Form>
 			</div>
 		</main>
