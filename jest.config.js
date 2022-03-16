@@ -5,4 +5,7 @@ module.exports = {
 		"^.+\\.tsx?$": "ts-jest",
 	},
 	moduleFileExtensions: ["js", "ts", "tsx", "json"],
+	moduleNameMapper: {
+		"\\.css$": "<rootDir>/app/__mocks__/styleMock.js",
+	},
 };
