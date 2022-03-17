@@ -6,6 +6,12 @@ import {
 	AuditSummary,
 	Version,
 } from "~/lib/audit.server";
+import { cache } from "~/lib/cache.server";
+
+type QueryParams = {
+	packageName: string;
+	version: Version;
+};
 
 type LoaderData = {
 	audits: Audit[];
@@ -18,14 +24,23 @@ const isAuditAdvisory = (audit: Audit): audit is AuditAdvisory => {
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
-	const { packageName, version } = params;
-	if (packageName && version) {
-		const audits = await generatePacakgeAudit({
-			name: packageName,
-			version: version as Version,
-		});
+	const { packageName, version } = params as QueryParams;
 
-		return json({ audits, packageName, version });
+	if (packageName && version) {
+		const audits = cache.get(packageName, version);
+
+		if (!audits) {
+			const generatedAudit = await generatePacakgeAudit({
+				name: packageName,
+				version: version,
+			});
+
+			cache.set(packageName, version, generatedAudit);
+
+			return json<LoaderData>({ audits: generatedAudit, packageName, version });
+		}
+
+		return json<LoaderData>({ audits, packageName, version });
 	}
 
 	return json({});
