@@ -1,7 +1,22 @@
 module.exports = {
 	content: ["./app/**/*.{ts,tsx}"],
 	theme: {
-		extend: {},
+		extend: {
+			typography: (theme) => ({
+				dark: {
+					css: [
+						{
+							color: theme("colors.gray.200"),
+						},
+					],
+				},
+			}),
+		},
 	},
-	plugins: [],
+	variants: {
+		extend: {
+			typography: ["dark"],
+		},
+	},
+	plugins: [require("@tailwindcss/typography")],
 };

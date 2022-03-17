@@ -7,14 +7,21 @@ import {
 	ScrollRestoration,
 } from "remix";
 import type { MetaFunction } from "remix";
+
+import { Layout } from "./components/layout";
+
 import styles from "~/styles/root.css";
-import tailwindStyles from "./styles/app.css";
+import tailwindStyles from "./styles/tailwind.css";
 
 export const meta: MetaFunction = () => {
 	return { title: "Auditphobia" };
 };
 
 export const links = () => [
+	{
+		rel: "icon",
+		href: "/favicon.ico",
+	},
 	{ rel: "stylesheet", href: styles },
 	{ rel: "stylesheet", href: tailwindStyles },
 ];
@@ -29,7 +36,9 @@ export default function App() {
 				<Links />
 			</head>
 			<body>
-				<Outlet />
+				<Layout>
+					<Outlet />
+				</Layout>
 				<Scripts />
 				<ScrollRestoration />
 				{process.env.NODE_ENV === "development" && <LiveReload />}
