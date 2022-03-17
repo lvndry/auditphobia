@@ -8,12 +8,16 @@ import {
 } from "remix";
 import type { MetaFunction } from "remix";
 import styles from "~/styles/root.css";
+import tailwindStyles from "./styles/app.css";
 
 export const meta: MetaFunction = () => {
 	return { title: "Auditphobia" };
 };
 
-export const links = () => [{ rel: "stylesheet", href: styles }];
+export const links = () => [
+	{ rel: "stylesheet", href: styles },
+	{ rel: "stylesheet", href: tailwindStyles },
+];
 
 export default function App() {
 	return (
