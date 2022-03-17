@@ -45,17 +45,17 @@ export default function Index() {
 					</div>
 					<div data-suggestions-list>
 						{suggestions.length
-							? suggestions.map((suggestion) => {
+							? suggestions.map(({ package: suggestion }) => {
+									const { name, description, version } = suggestion;
 									return (
-										<div
-											key={suggestion.package.name}
-											data-suggestions-list-item
-										>
+										<div key={name} data-suggestions-list-item>
 											<a
-												href={`/package/${suggestion.package.name}/${suggestion.package.version}`}
+												href={`/package/${name}/${version}`}
 												data-suggestions-list-item
 											>
-												{suggestion.package.name}
+												<h3>{name}</h3>
+												<h3>{description}</h3>
+												<h3>{version}</h3>
 											</a>
 										</div>
 									);
