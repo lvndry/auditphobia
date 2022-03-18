@@ -1,4 +1,5 @@
 import { json, LoaderFunction, useLoaderData } from "remix";
+import { Header } from "~/components/header";
 import {
 	generatePacakgeAudit,
 	Audit,
@@ -60,29 +61,32 @@ const PackageNamePage = () => {
 
 	return (
 		<div>
-			{packageName}@{version}
-			{advisory.length && (
-				<>
-					<h2>Advisory</h2>
-					{advisory.map((audit) => {
-						return (
-							<pre key={audit.data.resolution.id}>
-								{JSON.stringify(audit, null, 2)}
-							</pre>
-						);
-					})}
-				</>
-			)}
-			{summary.length && (
-				<>
-					<h2>Summary</h2>
-					{summary.map((audit, i) => {
-						return (
-							<pre key={`summary-${i}`}>{JSON.stringify(audit, null, 2)}</pre>
-						);
-					})}
-				</>
-			)}
+			<Header />
+			<div>
+				{packageName}@{version}
+				{advisory.length && (
+					<>
+						<h2>Advisory</h2>
+						{advisory.map((audit) => {
+							return (
+								<pre key={audit.data.resolution.id}>
+									{JSON.stringify(audit, null, 2)}
+								</pre>
+							);
+						})}
+					</>
+				)}
+				{summary.length && (
+					<>
+						<h2>Summary</h2>
+						{summary.map((audit, i) => {
+							return (
+								<pre key={`summary-${i}`}>{JSON.stringify(audit, null, 2)}</pre>
+							);
+						})}
+					</>
+				)}
+			</div>
 		</div>
 	);
 };
