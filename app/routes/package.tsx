@@ -74,11 +74,12 @@ const PackageNamePage = () => {
 		<div>
 			<Header />
 			<div className="max-w-full">
-				{packageName}@{version}
-				{advisory.length && (
-					<>
-						<h2 className="text-4xl">Advisory</h2>
-						<div className="">
+				<div className="text-center text-2xl">
+					{packageName}@{version}
+				</div>
+				<div className="mt-5">
+					{advisory.length && (
+						<div className="grid grid-cols-3 gap-4">
 							{advisory.map((audit) => {
 								return (
 									<Advisory
@@ -88,18 +89,20 @@ const PackageNamePage = () => {
 								);
 							})}
 						</div>
-					</>
-				)}
-				{summary.length && (
-					<>
-						<h2>Summary</h2>
-						{summary.map((audit, i) => {
-							return (
-								<pre key={`summary-${i}`}>{JSON.stringify(audit, null, 2)}</pre>
-							);
-						})}
-					</>
-				)}
+					)}
+					{summary.length && (
+						<>
+							<h2>Summary</h2>
+							{summary.map((audit, i) => {
+								return (
+									<pre key={`summary-${i}`}>
+										{JSON.stringify(audit, null, 2)}
+									</pre>
+								);
+							})}
+						</>
+					)}
+				</div>
 			</div>
 		</div>
 	);

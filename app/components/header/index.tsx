@@ -3,8 +3,8 @@ import Image from "remix-image";
 export const Header = () => {
 	const github_repo_link = "https://github.com/lvndry/auditphobia";
 	return (
-		<div className="header flex justify-around">
-			<span className="text-6xl">
+		<div className="header flex justify-between">
+			<span className="text-3xl">
 				<h1>Auditphobia</h1>
 			</span>
 			<section className="right-section dark:invert">

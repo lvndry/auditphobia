@@ -8,23 +8,29 @@ export const Advisory = ({ advisory }: AdvisoryProps) => {
 	const { data } = advisory;
 
 	return (
-		<div className="border-solid border-2 border-indigo-600">
+		<div className="max-w-md p-3 break-all border-solid border-2 border-indigo-600">
+			<section className="flex flex-col">
+				<span>
+					Impacted package: {data.resolution.path.split(">").join(" >  ")} until
+					version {data.advisory.vulnerable_versions.slice(1)}
+				</span>
+			</section>
 			<section className="flex flex-col">
 				<h5>{data.advisory.title}</h5>
 				<span>Severity: {data.advisory.severity}</span>
 			</section>
 			<section className="flex flex-col">
-				<span>{data.advisory.overview.split("###").join("\n")}</span>
 				<span>Recommendation: {data.advisory.recommendation}</span>
 			</section>
 			<section className="flex flex-col">
-				<span>{data.resolution.path}</span>
-				<span>{data.advisory.vulnerable_versions}</span>
-			</section>
-			<section className="flex flex-col">
-				<span>{data.advisory.references}</span>
-				<span>{data.advisory.url}</span>
-				<span>{`${data.resolution.optional}`}</span>
+				<div>
+					{data.advisory.references.split("- ").map((reference) => (
+						<div key={reference}>
+							<a href={reference}>{reference}</a>
+						</div>
+					))}
+				</div>
+				<span>{`Required: ${!data.resolution.optional}`}</span>
 				<span id="cvss">
 					CVSS: {data.advisory.cvss && data.advisory.cvss.score}
 				</span>
