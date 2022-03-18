@@ -12,6 +12,9 @@ module.exports = {
 				},
 			}),
 		},
+		fontFamily: {
+			body: ["Helvetica", "'Open Sans'"],
+		},
 	},
 	variants: {
 		extend: {

@@ -1,7 +1,7 @@
 {
 	"name": "auditphobia",
 	"private": false,
-	"description": "Check security vulnerabilites of your npm packages",
+	"description": "Find the vulnerabilites of a npm package",
 	"license": "MIT",
 	"sideEffects": false,
 	"scripts": {
@@ -11,7 +11,7 @@
 		"dev:css": "tailwindcss -w -i ./app/styles/base/tailwind.css -o app/styles/tailwind.css",
 		"postinstall": "remix setup node",
 		"start": "cross-env NODE_ENV=production remix-serve build",
-		"lint": "eslint .",
+		"lint": "eslint . --cache --ext ts,tsx,js",
 		"lint:fix": "yarn lint --fix",
 		"prepare": "husky install",
 		"test": "jest",

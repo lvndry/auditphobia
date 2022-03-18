@@ -22,6 +22,7 @@
 	font-size: 2em;
 	text-align: center;
 	color: #b3adad;
+	width: 90%;
 }
 
 [data-input]:focus {
@@ -30,7 +31,6 @@
 
 [data-query-form] {
 	width: 50%;
-	margin: auto;
 	display: flex;
 	flex-direction: column;
 }
@@ -43,17 +43,8 @@
 [data-suggestions-list-item] {
 	display: block;
 	position: relative;
-	padding: 0.8em 0em;
-	cursor: pointer;
-
-	border: none;
-	border-radius: 0.4em;
+	padding: 0.2em 0em;
 
 	text-transform: uppercase;
-	font-family: "Work Sans", sans-serif;
 	letter-spacing: 0.04em;
-
-	mix-blend-mode: color-dodge;
-	perspective: 500px;
-	transform-style: preserve-3d;
 }

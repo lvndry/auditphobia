@@ -8,11 +8,6 @@ import {
 } from "~/lib/audit.server";
 import { cache } from "~/lib/cache.server";
 
-type QueryParams = {
-	packageName: string;
-	version: Version;
-};
-
 type LoaderData = {
 	audits: Audit[];
 	packageName: string;
@@ -23,8 +18,10 @@ const isAuditAdvisory = (audit: Audit): audit is AuditAdvisory => {
 	return audit.type === "auditAdvisory";
 };
 
-export const loader: LoaderFunction = async ({ params }) => {
-	const { packageName, version } = params as QueryParams;
+export const loader: LoaderFunction = async ({ request }) => {
+	const url = new URL(request.url);
+	const packageName = url.searchParams.get("name");
+	const version = url.searchParams.get("version") as Version;
 
 	if (packageName && version) {
 		const audits = cache.get(packageName, version);
@@ -37,13 +34,17 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 			cache.set(packageName, version, generatedAudit);
 
-			return json<LoaderData>({ audits: generatedAudit, packageName, version });
+			return json<LoaderData>({
+				audits: generatedAudit,
+				packageName,
+				version,
+			});
 		}
 
 		return json<LoaderData>({ audits, packageName, version });
 	}
 
-	return json({});
+	return json({}, { status: 400 });
 };
 
 const PackageNamePage = () => {
