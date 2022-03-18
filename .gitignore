@@ -8,3 +8,4 @@ node_modules
 .eslintcache
 
 /app/styles/tailwind.css
+.DS_Store
