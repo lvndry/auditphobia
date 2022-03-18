@@ -1,4 +1,6 @@
-import { json, LoaderFunction, useLoaderData } from "remix";
+import { json, LoaderFunction, MetaFunction, useLoaderData } from "remix";
+
+import { Advisory } from "~/components/advisory";
 import { Header } from "~/components/header";
 import {
 	generatePacakgeAudit,
@@ -6,8 +8,8 @@ import {
 	AuditAdvisory,
 	AuditSummary,
 	Version,
-} from "~/lib/audit.server";
-import { cache } from "~/lib/cache.server";
+} from "~/server/audit.server";
+import { cache } from "~/server/cache.server";
 
 type LoaderData = {
 	audits: Audit[];
@@ -17,6 +19,15 @@ type LoaderData = {
 
 const isAuditAdvisory = (audit: Audit): audit is AuditAdvisory => {
 	return audit.type === "auditAdvisory";
+};
+
+export const meta: MetaFunction = ({ data }) => {
+	if (data) {
+		const { packageName, version } = data as LoaderData;
+		return { title: `${packageName} v${version} | Auditphobia` };
+	}
+
+	return { title: "Auditphobia" };
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -62,18 +73,21 @@ const PackageNamePage = () => {
 	return (
 		<div>
 			<Header />
-			<div>
+			<div className="max-w-full">
 				{packageName}@{version}
 				{advisory.length && (
 					<>
-						<h2>Advisory</h2>
-						{advisory.map((audit) => {
-							return (
-								<pre key={audit.data.resolution.id}>
-									{JSON.stringify(audit, null, 2)}
-								</pre>
-							);
-						})}
+						<h2 className="text-4xl">Advisory</h2>
+						<div className="">
+							{advisory.map((audit) => {
+								return (
+									<Advisory
+										key={audit.data.advisory.github_advisory_id}
+										advisory={audit}
+									/>
+								);
+							})}
+						</div>
 					</>
 				)}
 				{summary.length && (
