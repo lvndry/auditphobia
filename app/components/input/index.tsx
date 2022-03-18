@@ -13,7 +13,7 @@ export const Input = (
 		<input
 			data-input
 			type={type}
-			className={`audph-input ${className}`}
+			className={`audph-input dark:bg-slate-900 ${className}`}
 			onChange={onChange}
 			name={name}
 			placeholder={placeholder}

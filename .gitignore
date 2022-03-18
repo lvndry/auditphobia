@@ -5,3 +5,7 @@ node_modules
 /public/build
 .env
 *.log
+.eslintcache
+
+/app/styles/tailwind.css
+.DS_Store
