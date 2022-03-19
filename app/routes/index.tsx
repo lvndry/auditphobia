@@ -45,8 +45,8 @@ export default function Index() {
 				<Form
 					autoComplete="off"
 					onChange={handleChange}
-					data-query-form
 					className="mt-8"
+					data-query-form
 				>
 					<div className="mb-4" data-input-wrapper>
 						<Input

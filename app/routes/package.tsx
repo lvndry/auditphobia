@@ -35,77 +35,82 @@ export const loader: LoaderFunction = async ({ request }) => {
 	const packageName = url.searchParams.get("name");
 	const version = url.searchParams.get("version") as Version;
 
-	if (packageName && version) {
-		const audits = cache.get(packageName, version);
-
-		if (!audits) {
-			const generatedAudit = await generatePacakgeAudit({
-				name: packageName,
-				version: version,
-			});
-
-			cache.set(packageName, version, generatedAudit);
-
-			return json<LoaderData>({
-				audits: generatedAudit,
-				packageName,
-				version,
-			});
-		}
-
-		return json<LoaderData>({ audits, packageName, version });
+	if (!packageName || !version) {
+		// TODO: should return an error message
+		return json(null, { status: 400 });
 	}
 
-	return json({}, { status: 400 });
+	const audits = cache.get(packageName, version);
+
+	if (!audits) {
+		const generatedAudit = await generatePacakgeAudit({
+			name: packageName,
+			version: version,
+		});
+
+		cache.set(packageName, version, generatedAudit);
+
+		return json<LoaderData>({
+			audits: generatedAudit,
+			packageName,
+			version,
+		});
+	}
+
+	return json<LoaderData>({ audits, packageName, version });
 };
 
 const PackageNamePage = () => {
-	const { audits, packageName, version } = useLoaderData<LoaderData>();
-	const [advisory, summary] = audits.reduce(
-		([auditAdivosry, auditSummary], curr) => {
-			return isAuditAdvisory(curr)
-				? [[...auditAdivosry, curr], auditSummary]
-				: [auditAdivosry, [...auditSummary, curr]];
-		},
-		[[] as AuditAdvisory[], [] as AuditSummary[]]
-	);
+	const loaderData = useLoaderData<LoaderData | null>();
 
-	return (
-		<div>
-			<Header />
-			<div className="max-w-full">
-				<div className="text-center text-2xl">
-					{packageName}@{version}
-				</div>
-				<div className="mt-5">
-					{advisory.length && (
-						<div className="grid grid-cols-3 gap-4">
-							{advisory.map((audit) => {
-								return (
-									<Advisory
-										key={audit.data.advisory.github_advisory_id}
-										advisory={audit}
-									/>
-								);
-							})}
-						</div>
-					)}
-					{summary.length && (
-						<>
-							<h2>Summary</h2>
-							{summary.map((audit, i) => {
-								return (
-									<pre key={`summary-${i}`}>
-										{JSON.stringify(audit, null, 2)}
-									</pre>
-								);
-							})}
-						</>
-					)}
+	if (loaderData) {
+		const { audits, packageName, version } = loaderData;
+		const [advisory, summary] = audits.reduce(
+			([auditAdivosry, auditSummary], curr) => {
+				return isAuditAdvisory(curr)
+					? [[...auditAdivosry, curr], auditSummary]
+					: [auditAdivosry, [...auditSummary, curr]];
+			},
+			[[] as AuditAdvisory[], [] as AuditSummary[]]
+		);
+
+		return (
+			<div>
+				<Header />
+				<div className="max-w-full">
+					<div className="text-center text-2xl">
+						{packageName}@{version}
+					</div>
+					<div className="mt-5">
+						{advisory.length ? (
+							<div className="grid grid-cols-3 gap-4">
+								{advisory.map((audit) => {
+									return (
+										<Advisory
+											key={audit.data.advisory.github_advisory_id}
+											advisory={audit}
+										/>
+									);
+								})}
+							</div>
+						) : null}
+						{summary.length ? (
+							<>
+								<h2>Summary</h2>
+								{summary.map((audit, i) => {
+									return (
+										<pre key={`summary-${i}`}>
+											{JSON.stringify(audit, null, 2)}
+										</pre>
+									);
+								})}
+							</>
+						) : null}
+					</div>
 				</div>
 			</div>
-		</div>
-	);
+		);
+	}
 };
 
 export default PackageNamePage;

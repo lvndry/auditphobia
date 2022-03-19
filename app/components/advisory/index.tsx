@@ -8,12 +8,13 @@ export const Advisory = ({ advisory }: AdvisoryProps) => {
 	const { data } = advisory;
 
 	return (
-		<div className="max-w-md p-3 break-all border-solid border-2 border-indigo-600">
+		<div className="max-w-md p-3 break-words border-solid border-2 rounded-md dark:border-indigo-600">
 			<section className="flex flex-col">
 				<span>
 					Impacted package: {data.resolution.path.split(">").join(" >  ")} until
 					version {data.advisory.vulnerable_versions.slice(1)}
 				</span>
+				<span>Current version: {data.advisory.findings}</span>
 			</section>
 			<section className="flex flex-col">
 				<h5>{data.advisory.title}</h5>
@@ -26,7 +27,9 @@ export const Advisory = ({ advisory }: AdvisoryProps) => {
 				<div>
 					{data.advisory.references.split("- ").map((reference) => (
 						<div key={reference}>
-							<a href={reference}>{reference}</a>
+							<a href={reference} className="text-blue-600">
+								{reference}
+							</a>
 						</div>
 					))}
 				</div>
