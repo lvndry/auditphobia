@@ -3,7 +3,7 @@ import { json, LoaderFunction, MetaFunction, useLoaderData } from "remix";
 import { Advisory } from "~/components/advisory";
 import { Header } from "~/components/header";
 import {
-	generatePacakgeAudit,
+	generatePackageAudit,
 	Audit,
 	AuditAdvisory,
 	AuditSummary,
@@ -43,7 +43,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 	const audits = cache.get(packageName, version);
 
 	if (!audits) {
-		const generatedAudit = await generatePacakgeAudit({
+		const generatedAudit = await generatePackageAudit({
 			name: packageName,
 			version: version,
 		});
