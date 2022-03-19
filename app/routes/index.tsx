@@ -51,7 +51,7 @@ export default function Index() {
 					<div className="mb-4" data-input-wrapper>
 						<Input
 							name="query"
-							placeholder="find pacakge"
+							placeholder="find package"
 							aria-label="package-name"
 						/>
 					</div>

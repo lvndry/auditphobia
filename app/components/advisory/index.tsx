@@ -14,7 +14,7 @@ export const Advisory = ({ advisory }: AdvisoryProps) => {
 					Impacted package: {data.resolution.path.split(">").join(" >  ")} until
 					version {data.advisory.vulnerable_versions.slice(1)}
 				</span>
-				<span>Current version: {data.advisory.findings}</span>
+				<span>Used version: {data.advisory.findings[0].version}</span>
 			</section>
 			<section className="flex flex-col">
 				<h5>{data.advisory.title}</h5>
@@ -24,6 +24,7 @@ export const Advisory = ({ advisory }: AdvisoryProps) => {
 				<span>Recommendation: {data.advisory.recommendation}</span>
 			</section>
 			<section className="flex flex-col">
+				Links:
 				<div>
 					{data.advisory.references.split("- ").map((reference) => (
 						<div key={reference}>
@@ -33,7 +34,6 @@ export const Advisory = ({ advisory }: AdvisoryProps) => {
 						</div>
 					))}
 				</div>
-				<span>{`Required: ${!data.resolution.optional}`}</span>
 				<span id="cvss">
 					CVSS: {data.advisory.cvss && data.advisory.cvss.score}
 				</span>
