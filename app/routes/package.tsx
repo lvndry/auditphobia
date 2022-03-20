@@ -2,6 +2,7 @@ import { json, LoaderFunction, MetaFunction, useLoaderData } from "remix";
 
 import { Advisory } from "~/components/advisory";
 import { Header } from "~/components/header";
+import { Summary } from "~/components/summary";
 import {
 	generatePackageAudit,
 	Audit,
@@ -10,15 +11,13 @@ import {
 	Version,
 } from "~/server/audit.server";
 import { cache } from "~/server/cache.server";
+import { PackageInfos } from "~/types/package";
 
 type LoaderData = {
 	audits: Audit[];
 	packageName: string;
 	version: Version;
-};
-
-const isAuditAdvisory = (audit: Audit): audit is AuditAdvisory => {
-	return audit.type === "auditAdvisory";
+	infos: PackageInfos;
 };
 
 export const meta: MetaFunction = ({ data }) => {
@@ -34,6 +33,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 	const url = new URL(request.url);
 	const packageName = url.searchParams.get("name");
 	const version = url.searchParams.get("version") as Version;
+	const response = await fetch(`https://api.npms.io/v2/package/${packageName}`);
+	const infos: PackageInfos = await response.json();
 
 	if (!packageName || !version) {
 		// TODO: should return an error message
@@ -54,10 +55,15 @@ export const loader: LoaderFunction = async ({ request }) => {
 			audits: generatedAudit,
 			packageName,
 			version,
+			infos,
 		});
 	}
 
-	return json<LoaderData>({ audits, packageName, version });
+	return json<LoaderData>({ audits, packageName, version, infos });
+};
+
+const isAuditAdvisory = (audit: Audit): audit is AuditAdvisory => {
+	return audit.type === "auditAdvisory";
 };
 
 const PackageNamePage = () => {
@@ -78,10 +84,19 @@ const PackageNamePage = () => {
 			<div>
 				<Header />
 				<div className="max-w-full">
-					<div className="text-center text-2xl">
-						{packageName}@{version}
+					<div className="text-center text-3xl">
+						<span>{packageName}</span>
+						<span className="text-green-200">@</span>
+						<span>{version}</span>
 					</div>
 					<div className="mt-5">
+						{summary.length ? (
+							<>
+								{summary.map((audit, i) => {
+									return <Summary key={i} summary={audit} />;
+								})}
+							</>
+						) : null}
 						{advisory.length ? (
 							<div className="grid grid-cols-3 gap-4">
 								{advisory.map((audit) => {
@@ -93,18 +108,6 @@ const PackageNamePage = () => {
 									);
 								})}
 							</div>
-						) : null}
-						{summary.length ? (
-							<>
-								<h2>Summary</h2>
-								{summary.map((audit, i) => {
-									return (
-										<pre key={`summary-${i}`}>
-											{JSON.stringify(audit, null, 2)}
-										</pre>
-									);
-								})}
-							</>
 						) : null}
 					</div>
 				</div>
