@@ -28,7 +28,7 @@ export const links = () => [
 
 export default function App() {
 	return (
-		<html className="bg-white dark:bg-slate-900" lang="en">
+		<html lang="en" className="bg-white dark:bg-slate-900">
 			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width,initial-scale=1" />

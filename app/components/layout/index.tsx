@@ -4,7 +4,7 @@ interface LayoutProps {
 
 export const Layout = ({ children }: LayoutProps) => {
 	return (
-		<main className="text-zinc-400	dark:text-gray-200 min-h-full">
+		<main className="p-8	text-zinc-600	dark:text-gray-200 min-h-full">
 			{children}
 		</main>
 	);

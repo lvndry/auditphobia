@@ -1,7 +1,8 @@
 import { Form, json, LoaderFunction, useLoaderData, useSubmit } from "remix";
 import { Input, links as InputLinks } from "~/components/input";
-import { NPMSPackage } from "~/types/package";
+import { NPMSSuggestion } from "~/types/package";
 import styles from "~/styles/index.css";
+import { appName } from "~/constants";
 
 export const loader: LoaderFunction = async ({ request }) => {
 	const url = new URL(request.url);
@@ -11,7 +12,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 		const LIMIT = 4;
 		const NPMS_ENDPOINT = `https://api.npms.io/v2/search/suggestions?size=${LIMIT}&q=${query}`;
 		const response = await fetch(NPMS_ENDPOINT);
-		const suggestions: NPMSPackage[] = await response.json();
+		const suggestions: NPMSSuggestion[] = await response.json();
+
 		return json(
 			suggestions.sort(
 				(a, b) => b.score.detail.popularity - a.score.detail.popularity
@@ -29,7 +31,7 @@ export const links = () => [
 
 export default function Index() {
 	const submit = useSubmit();
-	const suggestions: NPMSPackage[] = useLoaderData();
+	const suggestions: NPMSSuggestion[] = useLoaderData();
 
 	const handleChange = (event: React.FormEvent<HTMLFormElement>) => {
 		submit(event.currentTarget);
@@ -38,20 +40,20 @@ export default function Index() {
 	return (
 		<article className="homepage">
 			<div className="homepage-container">
-				<h1 className="text-6xl">Auditphobia</h1>
+				<h1 className="text-6xl first-letter:uppercase">{appName}</h1>
 				<h2 className="text-xl my-3">
 					Find the vulnerabilites of a npm package
 				</h2>
 				<Form
 					autoComplete="off"
 					onChange={handleChange}
-					data-query-form
 					className="mt-8"
+					data-query-form
 				>
 					<div className="mb-4" data-input-wrapper>
 						<Input
 							name="query"
-							placeholder="find pacakge"
+							placeholder="find package"
 							aria-label="package-name"
 						/>
 					</div>
