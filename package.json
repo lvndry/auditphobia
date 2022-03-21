@@ -1,9 +1,9 @@
 {
 	"name": "auditphobia",
-	"private": false,
 	"description": "Find the vulnerabilites of a npm package",
 	"license": "MIT",
 	"sideEffects": false,
+	"version": "0.0.1",
 	"scripts": {
 		"build": "run-s build:*",
 		"build:css": "yarn generate:css --minify",
@@ -23,7 +23,7 @@
 	"dependencies": {
 		"@remix-run/react": "^1.2.2",
 		"@remix-run/serve": "^1.2.2",
-		"auditphobia-gadget": "0.0.7",
+		"auditphobia-gadget": "0.0.8",
 		"cross-env": "^7.0.3",
 		"node-cache": "^5.1.2",
 		"react": "^17.0.2",

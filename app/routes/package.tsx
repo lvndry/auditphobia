@@ -2,6 +2,7 @@ import { json, LoaderFunction, MetaFunction, useLoaderData } from "remix";
 
 import { Advisory } from "~/components/advisory";
 import { Header } from "~/components/header";
+import { NoVulnerabilites } from "~/components/noVulnerabilites";
 import { Summary } from "~/components/summary";
 import {
 	generatePackageAudit,
@@ -89,27 +90,31 @@ const PackageNamePage = () => {
 						<span className="text-green-200">@</span>
 						<span>{version}</span>
 					</div>
-					<div className="mt-5">
-						{summary.length ? (
-							<>
-								{summary.map((audit, i) => {
-									return <Summary key={i} summary={audit} />;
-								})}
-							</>
-						) : null}
-						{advisory.length ? (
-							<div className="grid grid-cols-3 gap-4">
-								{advisory.map((audit) => {
-									return (
-										<Advisory
-											key={audit.data.advisory.github_advisory_id}
-											advisory={audit}
-										/>
-									);
-								})}
-							</div>
-						) : null}
-					</div>
+					{advisory.length ? (
+						<div className="mt-5">
+							{summary.length ? (
+								<>
+									{summary.map((audit, i) => {
+										return <Summary key={i} summary={audit} />;
+									})}
+								</>
+							) : null}
+							{advisory.length ? (
+								<div className="grid grid-cols-3 gap-4">
+									{advisory.map((audit) => {
+										return (
+											<Advisory
+												key={audit.data.advisory.github_advisory_id}
+												advisory={audit}
+											/>
+										);
+									})}
+								</div>
+							) : null}
+						</div>
+					) : (
+						<NoVulnerabilites />
+					)}
 				</div>
 			</div>
 		);
